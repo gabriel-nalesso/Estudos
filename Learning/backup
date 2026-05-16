@@ -1,0 +1,93 @@
+#include <stdio.h>
+
+int tabuleiro[10][10];
+int linha, coluna, linha2, coluna2, verificacao;
+
+void imprimirTabuleiro(int tabuleiro[10][10])
+{
+  for (int i = 0; i < 10; i++)
+  {
+    for (int j = 0; j < 10; j++)
+    {
+      printf("%d ", tabuleiro[i][j]);
+    }
+    printf("\n");
+  }
+}
+void posicao1(int linha, int coluna)
+{
+  do
+  {
+    printf("\n\nEscolha uma linha de 1 a 10: ");
+    scanf("%d", &linha);
+    printf("\n\nEscolha uma coluna de 1 a 10: ");
+    scanf("%d", &coluna);
+    if (linha > 0 && linha <= 10 && coluna <= 10 && coluna > 0)
+    {
+      printf("Posições válidas.\n");
+      tabuleiro[linha - 1][coluna - 1] = 3;
+      verificacao = 0;
+      if (linha > 2)
+      {
+        tabuleiro[linha - 2][coluna - 1] = 3;
+        tabuleiro[linha - 3][coluna - 1] = 3;
+      }
+      else
+      {
+        tabuleiro[linha][coluna - 1] = 3;
+        tabuleiro[linha + 1][coluna - 1] = 3;
+      }
+    }
+    else
+    {
+      printf("Posições inválidas.\n");
+      verificacao = 1;
+    }
+  } while (verificacao == 1);
+}
+void posicao2(int linha2, int coluna2)
+{
+  do
+  {
+    printf("\n\nEscolha uma linha de 1 a 10 para a segunda posição: ");
+    scanf("%d", &linha2);
+    printf("\n\nEscolha uma coluna de 1 a 10 para a segunda posição: ");
+    scanf("%d", &coluna2);
+
+    int sobreposicao = 0;
+    // Amanhã: achar um jeito de, caso a esquerda esteja bloqueada, jogar o navio pra direita e vice-versa. Se e posição for realmente inválida, solicitar novamente a posição.
+    if (tabuleiro[linha2 - 1][coluna2 - 1] == 3 || tabuleiro[linha2 - 1][coluna2 - 2] == 3 || tabuleiro[linha2 - 1][coluna2 - 3] == 3)
+    {
+      sobreposicao = 1;
+    }
+
+    if (linha2 > 0 && linha2 <= 10 && coluna2 <= 10 && coluna2 > 0 && tabuleiro[linha2 - 1][coluna2 - 1] != 3 && sobreposicao == 0)
+    {
+      printf("Posições válidas.\n");
+      tabuleiro[linha2 - 1][coluna2 - 1] = 3;
+      verificacao = 0;
+      if (coluna2 > 2)
+      {
+        tabuleiro[linha2 - 1][coluna2 - 2] = 3;
+        tabuleiro[linha2 - 1][coluna2 - 3] = 3;
+      }
+    }
+    else
+    {
+      printf("Posições inválidas ou ocupadas.\n");
+      verificacao = 1;
+    }
+  } while (verificacao == 1);
+}
+
+int main()
+{
+  imprimirTabuleiro(tabuleiro);
+  posicao1(linha, coluna);
+  imprimirTabuleiro(tabuleiro);
+
+  posicao2(linha2, coluna2);
+  imprimirTabuleiro(tabuleiro);
+
+  return 0;
+}
